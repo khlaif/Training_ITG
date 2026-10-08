@@ -1,58 +1,170 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sport Club Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Task 2 – Laravel Phase 1
 
-## About Laravel
+A web-based Sport Club Management System developed using the Laravel PHP framework. This project rebuilds the previous PHP application using Laravel and implements the basic authentication and role-based dashboard functionality.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 1. Project Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Homepage with club information and navigation links.
+- User registration with Trainer and Player roles.
+- User login and logout.
+- Form validation using Laravel.
+- Secure password hashing.
+- Role-based redirection after login.
+- Separate Trainer and Player dashboards.
+- Display of logged-in user information.
+- Database management using Laravel migrations.
+- MySQL database running with Docker.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## 2. Technologies Used
 
-## Learning Laravel
+- PHP
+- Laravel
+- MySQL
+- Docker
+- HTML and CSS
+- Blade Templates
+- Git and GitHub
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 3. Project Structure
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The application follows Laravel's MVC structure.
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- `app/Http/Controllers/` – Registration and authentication controllers.
+- `app/Models/User.php` – User model.
+- `database/migrations/` – Database migrations.
+- `resources/views/home.blade.php` – Homepage.
+- `resources/views/auth/` – Registration and login pages.
+- `resources/views/dashboards/` – Trainer and Player dashboards.
+- `resources/views/layouts/app.blade.php` – Shared application layout.
+- `routes/web.php` – Application routes.
+- `docker-compose.yml` – Docker database configuration.
 
-## Agentic Development
+## 4. Project Setup
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Step 1: Clone the Repository
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone -b "Task2(Laravel_Phase1)" https://github.com/khlaif/Training_ITG.git
+cd Training_ITG
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### Step 2: Install Dependencies
 
-## Contributing
+Make sure PHP, Composer, and Docker Desktop are installed.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+composer install
+```
 
-## Code of Conduct
+### Step 3: Configure the Environment
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Create the `.env` file from `.env.example`.
 
-## Security Vulnerabilities
+On Windows PowerShell:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```powershell
+Copy-Item .env.example .env
+```
 
-## License
+Generate the application key:
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+php artisan key:generate
+```
+
+### Step 4: Configure the Database
+
+Update the database settings in `.env` to match the MySQL service configured in `docker-compose.yml`.
+
+For example, when MySQL is exposed locally on port 3306:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sport_club
+DB_USERNAME=root
+DB_PASSWORD=your_database_password
+```
+
+The database name, username, password, and port must match the Docker configuration.
+
+### Step 5: Start Docker
+
+Start the MySQL database container:
+
+```bash
+docker compose up -d
+```
+
+Check that the container is running:
+
+```bash
+docker compose ps
+```
+
+### Step 6: Run Database Migrations
+
+```bash
+php artisan migrate
+```
+
+The users table includes:
+
+- First Name
+- Last Name
+- Email
+- Password
+- Role
+- Timestamps
+
+### Step 7: Run the Application
+
+```bash
+php artisan serve
+```
+
+Open the application in your browser:
+
+http://127.0.0.1:8000
+
+## 5. Authentication and User Roles
+
+The application supports two user roles: Trainer and Player.
+
+During registration, users enter their first name, last name, email, password, password confirmation, and selected role.
+
+Laravel validates the registration information and securely hashes passwords before storing them in the database.
+
+After successful login, users are redirected according to their roles.
+
+| Role | Dashboard URL |
+|---|---|
+| Trainer | `/trainer/dashboard` |
+| Player | `/player/dashboard` |
+
+Both dashboards display a welcome message, first name, last name, email address, user role, and logout button.
+
+## 6. Application Routes
+
+| Method | URL | Description |
+|---|---|---|
+| GET | `/` | Homepage |
+| GET | `/register` | Registration page |
+| POST | `/register` | Process registration |
+| GET | `/login` | Login page |
+| POST | `/login` | Authenticate user |
+| POST | `/logout` | Logout user |
+| GET | `/trainer/dashboard` | Trainer dashboard |
+| GET | `/player/dashboard` | Player dashboard |
+
+
+## 7. Project Scope
+
+This project implements Phase 1 of the Sport Club Management System.
+
+The current phase focuses on Laravel project setup, authentication, database migrations, user roles, and basic dashboards.
+
+Player management, match management, and additional role-based management functionality are outside the scope of this phase and will be implemented in future tasks.
