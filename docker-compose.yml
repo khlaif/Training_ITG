@@ -1,0 +1,17 @@
+services:
+    mysql:
+        image: mysql:8.4
+        container_name: sport_club_mysql
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: sport_club
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: sport_user
+            MYSQL_PASSWORD: sport_password
+        ports:
+            - "3306:3306"
+        volumes:
+            - sport_club_mysql_data:/var/lib/mysql
+
+volumes:
+    sport_club_mysql_data:
